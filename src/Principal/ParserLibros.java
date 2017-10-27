@@ -21,14 +21,12 @@ public class ParserLibros {
 	}
 	
 	public void parseXML(String fichero) {
-		
 		//Creamos fabrica
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		
 		try {
 			//Creamos DocumentBuilder
 			DocumentBuilder db = dbf.newDocumentBuilder();
-			
 			dom = db.parse(fichero);
 		}catch (Exception e) {
 			// TODO: handle exception
@@ -71,7 +69,7 @@ public class ParserLibros {
 		return actual;
 	}
 	
-	//TODO: Eliminar y simplificar
+	//Obtiene el año del titulo
 	private String getAño(Element ele, String tagName) {
 		String txtValue = null;
 		NodeList nl = ele.getElementsByTagName(tagName);
@@ -82,6 +80,7 @@ public class ParserLibros {
 		return txtValue;
 	}
 	
+	//Obtiene el valor del elemento a buscar
 	private String getTextValue(Element ele, String tagName) {
 		String txtValue = null;
 		NodeList nl = ele.getElementsByTagName(tagName);
@@ -101,6 +100,7 @@ public class ParserLibros {
 				//Obtenemos elemento Autores
 				Element elA = (Element) nl.item(0);
 				
+				//Inspecciona cada nombre que hay en autores
 				NodeList nlA = elA.getElementsByTagName("nombre");
 				for (int i=0; i<nlA.getLength(); i++) {
 					Element el = (Element) nlA.item(i);
@@ -113,6 +113,7 @@ public class ParserLibros {
 		return autores;
 	}
 	
+	//Devuelbe array
 	public ArrayList<Libro> getLibros(){
 		return this.libros;
 	}
