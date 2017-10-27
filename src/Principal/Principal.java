@@ -15,7 +15,7 @@ public class Principal {
 		//Imprimimos libros
 		System.out.println(limpiar(20));
 		for (int i=0; i<lbs.size(); i++) {
-			System.out.println("Libro número " + i);
+			System.out.println("Libro número " + (i+1));
 			System.out.println(limpiar(20));
 			System.out.println(lbs.get(i).imprimir());
 			System.out.println(limpiar(20));

@@ -18,4 +18,12 @@
 		<editor>Prentice Hall</editor>
 		<paginas>294</paginas>
 	</libro>
+	<libro>
+		<titulo anyo="2017">El soñador de Java</titulo>
+		<autor>
+		    <nombre>Jorge López Gil</nombre> 
+		</autor>
+		<editor>Florida Universitaria</editor>
+		<paginas>122</paginas>
+	</libro>
 </biblioteca>
