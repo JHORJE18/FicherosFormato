@@ -1,5 +1,6 @@
 package Principal;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -8,7 +9,7 @@ import Objetos.*;
 public class Principal {
 	
 	//Variables
-	static ArrayList <Libro> lbs = null;
+	static ArrayList <Libro> lbs = new ArrayList<Libro>();
 	
 	public static void main(String[] args) {
 		boolean salir = false;
@@ -64,13 +65,38 @@ public class Principal {
 	//Obtener libros XML
 	public static void cargarLibros() {
 		ParserLibros pl = new ParserLibros();
-		pl.parseXML("biblioteca.xml");
+		pl.parseXML(pedirFichero());
 		pl.parseDocument();
 		
-		lbs = pl.getLibros();
+		//Añadimos al array que conservamos los nuevos libros cargados
+		ArrayList <Libro> lbsTEMP = pl.getLibros();
+			for (int i=0; i<lbsTEMP.size(); i++) {
+				lbs.add(lbsTEMP.get(i));
+			}
 		
-		System.out.println(limpiar(25));
-		System.out.println("Se han obtenido " + lbs.size() + " libros");
+			System.out.println(limpiar(25));
+			System.out.println("Se han obtenido " + lbsTEMP.size() + " nuevos libros");
+			System.out.println("Atualmente hay un total de " + lbs.size() + " libros");
+	}
+	
+	//Pedir fichero 
+	public static String pedirFichero() {
+		Scanner entrada = new Scanner(System.in);
+		String fichero = "";
+		boolean valido = false;
+		while (!valido) {
+			System.out.println("Introduce el nombre del fichero XML");
+			fichero = entrada.nextLine();
+			
+			File archivo = new File(fichero);
+			if (!archivo.exists()) {
+				System.out.println("El ficheor no existe");
+			} else {
+				valido = true;
+			}
+		}
+		
+		return fichero;
 	}
 	
 	//Mostrar libros
@@ -139,8 +165,30 @@ public class Principal {
 	
 	//Guardar libros
 	public static void guardarLibros() {
+		Scanner entrada = new Scanner(System.in);
+		
 		System.out.println(limpiar(25));
-		System.out.println("Proximamente...");
+		System.out.println("Guardando valores");
+		
+		Marshaller marshaller = new Marshaller(lbs);
+		
+		System.out.println("Entro a crear Documento");
+		marshaller.crearDocumento();
+		System.out.println("Entro a crear arbol");
+		marshaller.crearArbolDOM();
+		
+		System.out.println("Introduce el nombre del nuevo fichero");
+		String fileTXT = entrada.nextLine();
+		
+		File archivo = new File(fileTXT + ".xml");
+		
+		try {
+			marshaller.escribirDocumentAXML(archivo);
+		}catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+		System.out.println("XML generado correctamente");
 	}
 	
 	//Devuelve Int seguro
