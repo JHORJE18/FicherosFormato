@@ -56,7 +56,6 @@ public class Marshaller {
 		while (it.hasNext()) {
 			Libro l = (Libro) it.next();
 			//Para cada objeto libro, creamos el <libro> y lo añadimos al DOM
-			System.out.println("Voy a establecer el primer libro");
 			Element libroEle = setLibro(l);
 			docEle.appendChild(libroEle);
 		}
@@ -72,12 +71,12 @@ public class Marshaller {
 		tituloEle.appendChild(tituloTexto);
 		tituloEle.setAttribute("anyo", l.getAño());
 		libroEle.appendChild(tituloEle);
-		
+				
 		//Creamos elemento Autores
 		ArrayList <Autor> autores = l.getAutores();
 		Iterator it = autores.iterator();
 		Element eleAutores = dom.createElement("autor");
-		while(it.hasNext()) {
+		for(int i=0; i<autores.size(); i++) {
 			Element eleNomAutor = dom.createElement("nombre");
 			Text nombreAutorEle = dom.createTextNode(l.getEditor());
 			eleNomAutor.appendChild(nombreAutorEle);

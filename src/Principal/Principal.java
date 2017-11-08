@@ -186,6 +186,7 @@ public class Principal {
 			marshaller.escribirDocumentAXML(archivo);
 		}catch (Exception e) {
 			// TODO: handle exception
+			System.out.println("Error al intentar generar el fichero xml");
 		}
 		
 		System.out.println("XML generado correctamente");
