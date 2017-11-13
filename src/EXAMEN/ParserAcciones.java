@@ -14,10 +14,10 @@ import Objetos.*;
 public class ParserAcciones {
 	
 	private Document dom = null;
-	private ArrayList<Libro> libros = null;
+	private ArrayList<Acciones> acciones = null;
 	
 	public ParserAcciones() {
-		libros = new ArrayList<Libro>();
+		acciones = new ArrayList<Acciones>();
 	}
 	
 	public void parseXML(String fichero) {
@@ -30,6 +30,7 @@ public class ParserAcciones {
 			dom = db.parse(fichero);
 		}catch (Exception e) {
 			// TODO: handle exception
+			System.out.println("Error en Factory");
 		}
 	}
 	
@@ -38,84 +39,78 @@ public class ParserAcciones {
 		Element docEl = dom.getDocumentElement();
 		
 		//Obtenemos NodeList
-		NodeList nl = docEl.getElementsByTagName("libro");
+		NodeList nl = docEl.getElementsByTagName("accion");
 		if (nl != null && nl.getLength() > 0) {
 			for (int i=0; i<nl.getLength(); i++) {
 				
 				//Obtenemos elemento
 				Element el = (Element) nl.item(i);
 				
-				//Obtenemos un libro
-				Libro lb = getLibro(el);
+				//Obtenemos una Accion
+				Acciones acNEW = getAccion(el);
 				
 				//Añadimos al array
-				libros.add(lb);
+				acciones.add(acNEW);
 			}
 		}
 	}
 	
 	//Obtenemos datos del libro
-	private Libro getLibro(Element libroEle) {
+	private Acciones getAccion(Element accionEle) {
 		
 		//Empezamos a obtener cada elemento
-		String titulo = getTextValue(libroEle, "titulo");
-		String anyo = getAño(libroEle, "titulo");;
-		ArrayList <Autor> autores = getAutores(libroEle);
-		String editor = getTextValue(libroEle, "editor");
-		String paginas = getTextValue(libroEle, "paginas");
+		String nombre = getNombre(accionEle, "nombre");
+		ArrayList <Operacion> operaciones = getOperaciones(accionEle);
 
-		Libro actual = new Libro(titulo, anyo, autores, editor, paginas);
+		//Generamos Accion que se ha encontrado
+		Acciones actual = new Acciones(nombre, operaciones);
 		
 		return actual;
 	}
 	
-	//Obtiene el año del titulo
-	private String getAño(Element ele, String tagName) {
+	//Obtiene el nombre de la Acción
+	private String getNombre(Element ele, String tagName) {
 		String txtValue = null;
-		NodeList nl = ele.getElementsByTagName(tagName);
-		if (nl != null && nl.getLength() > 0) {
-			Element el = (Element) nl.item(0);
-			txtValue = el.getAttributes().getNamedItem("anyo").getNodeValue();
-		}
+			txtValue = ele.getAttributes().getNamedItem("nombre").getNodeValue();
 		return txtValue;
+	}
+	
+	//Obtener Operaciones
+	private ArrayList<Operacion> getOperaciones(Element ele){
+		ArrayList <Operacion> operaciones = new ArrayList<Operacion>();
+				
+		//Inspecciona cada operacion que hay en Operaciones
+		NodeList nlA = ele.getElementsByTagName("operacion");
+		
+		for (int i=0; i<nlA.getLength(); i++) {
+			Element el = (Element) nlA.item(i);
+			
+			//Obtenemos valores de cada operacion
+			String tipo = getTextValue(el, "tipo");
+			String cantidad = getTextValue(el, "cantidad");
+			String precio = getTextValue(el, "precio");
+					
+			//Añadimos valores a un objeto
+			operaciones.add(new Operacion(tipo, cantidad, precio));					
+		}				
+
+		return operaciones;
 	}
 	
 	//Obtiene el valor del elemento a buscar
-	private String getTextValue(Element ele, String tagName) {
-		String txtValue = null;
-		NodeList nl = ele.getElementsByTagName(tagName);
-		if (nl != null && nl.getLength() > 0) {
-			Element el = (Element) nl.item(0);
-			txtValue = el.getFirstChild().getNodeValue();
+		private String getTextValue(Element ele, String tagName) {
+			String txtValue = null;
+			NodeList nl = ele.getElementsByTagName(tagName);
+			if (nl != null && nl.getLength() > 0) {
+				Element el = (Element) nl.item(0);
+				txtValue = el.getFirstChild().getNodeValue();
+			}
+			return txtValue;
 		}
-		return txtValue;
-	}
-	
-	//Obtener autores
-	private ArrayList<Autor> getAutores(Element ele){
-		ArrayList <Autor> autores = new ArrayList<Autor>();
-		
-		NodeList nl = ele.getElementsByTagName("autor");
-		if (nl != null && nl.getLength() > 0) {
-				//Obtenemos elemento Autores
-				Element elA = (Element) nl.item(0);
-				
-				//Inspecciona cada nombre que hay en autores
-				NodeList nlA = elA.getElementsByTagName("nombre");
-				for (int i=0; i<nlA.getLength(); i++) {
-					Element el = (Element) nlA.item(i);
-					String au = el.getFirstChild().getNodeValue();
-					
-					autores.add(new Autor(au));
-				}				
-		}
-
-		return autores;
-	}
 	
 	//Devuelbe array
-	public ArrayList<Libro> getLibros(){
-		return this.libros;
+	public ArrayList<Acciones> getAcciones(){
+		return this.acciones;
 	}
 
 }

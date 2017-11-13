@@ -4,10 +4,10 @@ public class Operacion {
 	
 	//Variables
 	String tipo;
-	int cantidad;
-	float precio;
+	String cantidad;
+	String precio;
 	
-	public Operacion(String tipo, int cantidad, float precio) {
+	public Operacion(String tipo, String cantidad, String precio) {
 		super();
 		this.tipo = tipo;
 		this.cantidad = cantidad;
@@ -20,16 +20,16 @@ public class Operacion {
 	public void setTipo(String tipo) {
 		this.tipo = tipo;
 	}
-	public int getCantidad() {
+	public String getCantidad() {
 		return cantidad;
 	}
-	public void setCantidad(int cantidad) {
+	public void setCantidad(String cantidad) {
 		this.cantidad = cantidad;
 	}
-	public float getPrecio() {
+	public String getPrecio() {
 		return precio;
 	}
-	public void setPrecio(float precio) {
+	public void setPrecio(String precio) {
 		this.precio = precio;
 	}
 	

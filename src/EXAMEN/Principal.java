@@ -13,24 +13,25 @@ public class Principal {
 	
 	public static void main(String[] args) {
 		cargarAcciones();
+		
+		mostrar();
 		System.out.println("Programa finalizado correctamente!");
 	}
 		
-	//Obtener libros XML
+	//Obtener Acciones XML
 	public static void cargarAcciones() {
 		ParserAcciones pa = new ParserAcciones();
 		pa.parseXML(pedirFichero());
 		pa.parseDocument();
 		
-		//Añadimos al array que conservamos los nuevos libros cargados
-		ArrayList <Acciones> acsTEMP = pl.getLibros();
+		//Añadimos al array que conservamos las nuevas Acciones cargados
+		ArrayList <Acciones> acsTEMP = pa.getAcciones();
 			for (int i=0; i<acsTEMP.size(); i++) {
 				accs.add(acsTEMP.get(i));
 			}
 		
-			System.out.println(limpiar(25));
-			System.out.println("Se han obtenido " + lbsTEMP.size() + " nuevos libros");
-			System.out.println("Atualmente hay un total de " + accs.size() + " libros");
+		System.out.println(limpiar(25));
+		System.out.println("Se han obtenido " + acsTEMP.size() + " acciones");
 	}
 	
 	//Pedir fichero 
@@ -53,29 +54,23 @@ public class Principal {
 		return fichero;
 	}
 	
-	//Devuelve Int seguro
-	public static int pedirInt(String motivo) {
-		Scanner entrada = new Scanner(System.in);
-		boolean valido = false;
-		int valor = 0;
-		
-		while (!valido) {
-			System.out.println("> Introduce el Número de " + motivo);
-			try {
-				valor = entrada.nextInt();
-			}catch (Exception e) {
-				// TODO: handle exception
-				valor = 0;
-			}
+	//Mostrar por pantalla
+	public static void mostrar() {
+		if (accs != null) {
+			System.out.println("Mostrando " + accs.size() + " acciones...");
 			
-			if (valor > 0) {
-				valido = true;
-			} else {
-				System.out.println("***** No puede tener 0, introduce un numero válido");
+			//Imprimimos Acciones
+			System.out.println(limpiar(20));
+			for (int i=0; i<accs.size(); i++) {
+				System.out.println("Acción Nº " + (i+1));
+				System.out.println(limpiar(20));
+				System.out.println(accs.get(i).imprimir());
+				System.out.println(limpiar(20));
 			}
+		} else {
+			System.out.println(limpiar(25));
+			System.out.println("No se encuentran acciones actualmente");
 		}
-		
-		return valor;
 	}
 	
 	//Genera Linea (Diseño)
